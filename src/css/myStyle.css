@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* Optional: Makes the sample page fill the window. */
 html, body {
     height: 100%;
@@ -13,3 +14,16 @@ html, body {
 #new-event {
 	position: relative;
 }
+=======
+#map {
+
+		width: 70%;
+        height: 70%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+>>>>>>> master
