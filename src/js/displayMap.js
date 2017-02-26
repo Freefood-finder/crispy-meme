@@ -1,3 +1,4 @@
+//change this to database      
       var map;
       var infowindow;
       var centerloc = {lat: 43.085, lng: -77.676};
