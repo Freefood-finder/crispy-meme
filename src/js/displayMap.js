@@ -1,5 +1,6 @@
       var map;
       var infowindow;
+      var centerloc = {lat: 43.085, lng: -77.676};
       var event = {
       0: { 
          lat: 43.087214,
@@ -87,11 +88,13 @@
       function initMap() {
       	
       	var mapSettings ={
-          center: {lat: 43.085, lng: -77.676},
+          center: centerloc,
           zoom: 16
       	};
+
         map = new google.maps.Map(document.getElementById("map"), mapSettings);
         infowindow = new google.maps.InfoWindow();
+
         for(var entry in event) {
           var pos = new google.maps.LatLng(event[entry].lat,event[entry].lng);
           var message = "<h1>"+event[entry].loc_name+"</h1><b>Desc: </b>" + event[entry].desc +"<br/><b> Time: </b>"+ event[entry].timeStart + "-" 
@@ -100,6 +103,9 @@
           var title = event[entry].desc;
           createMarker(pos, title, message);
         }
+
+        centerPosition(map);
+
       }
 
       function createMarker(latlng, title, content){
@@ -107,14 +113,56 @@
           var marker = new google.maps.Marker({
             map: map,
             position: latlng,
+            label: "1",
             title: title
             }); //end Marker
           google.maps.event.addListener(marker, 'click', function () {
             infowindow.setContent(content);
             infowindow.open(map, marker);
           });
-  
-          
+      }
+
+      function centerButton(controlDiv, map) {
+
+        var controlUI = document.createElement('div');
+        controlUI.style.backgroundColor = '#fff';
+        controlUI.style.border = '2px solid #fff';
+        controlUI.style.borderRadius = '3px';
+        controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+        controlUI.style.cursor = 'pointer';
+        controlUI.style.marginBottom = '22px';
+        controlUI.style.textAlign = 'center';
+        controlUI.title = 'Click to recenter the map';
+        controlDiv.appendChild(controlUI);
+
+        var controlText = document.createElement('div');
+        controlText.style.color = 'rgb(25,25,25)';
+        controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+        controlText.style.fontSize = '16px';
+        controlText.style.lineHeight = '38px';
+        controlText.style.paddingLeft = '5px';
+        controlText.style.paddingRight = '5px';
+        controlText.innerHTML = 'Center RIT Map';
+        controlUI.appendChild(controlText);
+
+        controlUI.addEventListener('click', function() {
+          map.setCenter(centerloc);
+        });
+
+      }
+
+      function centerPosition(map){
+
+        var centerControlDiv = document.createElement('div');
+        var centerControl = new centerButton(centerControlDiv, map);
+
+        centerControlDiv.index = 1;
+        map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
+
+        //limit zoom out
+		google.maps.event.addListener(map, 'zoom_changed', function() {
+    		if (map.getZoom() < 16) map.setZoom(16);
+		}); //end of limit zoom out
       }
       
   
